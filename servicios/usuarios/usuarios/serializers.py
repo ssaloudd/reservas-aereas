@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -30,3 +31,26 @@ class UsuarioSerializer(serializers.ModelSerializer):
             return user
         except Exception as e:
             raise ValidationError(str(e))
+        
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        
+        # Agrega claims personalizados al token
+        token['user_id'] = user.id
+        token['username'] = user.username
+        
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        
+        # Agrega datos adicionales a la respuesta
+        data.update({
+            'user_id': self.user.id,
+            'username': self.user.username,
+            'email': self.user.email
+        })
+        
+        return data

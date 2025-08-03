@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from gestion_vuelos.models import Aeropuerto, Aerolinea, Vuelo
 from datetime import datetime, timedelta
 import random
+import decimal
 
 class Command(BaseCommand):
     help = 'Carga datos iniciales para pruebas'
@@ -45,6 +46,8 @@ class Command(BaseCommand):
         # Vuelos MAD-BCN
         for i in range(5):
             fecha_salida = hoy + timedelta(days=i, hours=random.randint(7, 20))
+            precio_base = decimal.Decimal(str(random.uniform(50, 150))).quantize(decimal.Decimal('0.00'))
+            
             Vuelo.objects.create(
                 codigo_vuelo=f'IB{random.randint(1000, 9999)}',
                 aerolinea=ib,
@@ -54,7 +57,7 @@ class Command(BaseCommand):
                 fecha_llegada=fecha_salida + timedelta(hours=1),
                 duracion=timedelta(hours=1),
                 asientos_disponibles=random.randint(5, 50),
-                precio_base=random.uniform(50, 150)
+                precio_base=precio_base  # Usamos Decimal directamente
             )
         
         self.stdout.write(self.style.SUCCESS('Datos iniciales cargados con éxito'))

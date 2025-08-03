@@ -1,7 +1,5 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-import hashlib
-import secrets
 from datetime import date
 
 class Command(BaseCommand):
@@ -34,35 +32,31 @@ class Command(BaseCommand):
             },
             {
                 'username': 'admin',
-                'email': 'admin@aerolinea.com',
-                'password': 'AdminPassword789',
-                'first_name': 'Admin',
-                'last_name': 'Sistema',
-                'telefono': '+1122334455',
+                'email': 'admin@admin.com',
+                'password': 'admin',
+                'first_name': 'admin',
+                'last_name': 'admin',
+                'telefono': '1111111111',
                 'direccion': 'Oficina Central',
                 'fecha_nacimiento': date(1980, 1, 1),
-                'is_staff': True
+                'is_staff': True,
+                'is_superuser': True  # Añade esto si necesitas un superusuario
             }
         ]
         
         for user_data in users_data:
-            # Generar salt único
-            salt = secrets.token_hex(32)
-            salted_password = f"{user_data['password']}{salt}"
-            hashed_password = hashlib.sha256(salted_password.encode()).hexdigest()
-            
-            # Crear usuario
-            user = User.objects.create(
+            # Usa create_user para aprovechar la lógica de creación de usuarios
+            user = User.objects.create_user(
                 username=user_data['username'],
                 email=user_data['email'],
-                password=hashed_password,
+                password=user_data['password'],  # Esto activará tu set_password personalizado
                 first_name=user_data.get('first_name', ''),
                 last_name=user_data.get('last_name', ''),
                 telefono=user_data.get('telefono'),
                 direccion=user_data.get('direccion'),
                 fecha_nacimiento=user_data.get('fecha_nacimiento'),
                 is_staff=user_data.get('is_staff', False),
-                salt=salt
+                is_superuser=user_data.get('is_superuser', False)
             )
             
             self.stdout.write(self.style.SUCCESS(f'Usuario creado: {user.username}'))
