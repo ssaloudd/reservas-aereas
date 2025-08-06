@@ -24,4 +24,72 @@ client.interceptors.request.use(
   }
 );
 
+// Interceptor para manejar errores globalmente
+client.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Redirigir a login si el token es inválido
+      window.location.href = '/auth/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default client;
+
+// Función para obtener vuelos, ahora acepta un objeto de filtros
+export const getFlights = async (filters: { origen?: string; destino?: string; fecha?: string } = {}) => {
+  try {
+    let url = 'vuelos/api/vuelos/'; // URL base para el API Gateway
+
+    // Construir los parámetros de consulta
+    const params = new URLSearchParams();
+    if (filters.origen) {
+      params.append('origen', filters.origen);
+    }
+    if (filters.destino) {
+      params.append('destino', filters.destino);
+    }
+    if (filters.fecha) {
+      params.append('fecha', filters.fecha);
+    }
+
+    // Añadir los parámetros a la URL si existen
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+
+    // La URL completa que se enviará al API Gateway será:
+    // http://localhost:8003/api/vuelos/api/vuelos/?origen=UIO&destino=BOG&fecha=2025-08-05
+    const response = await client.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching flights:', error);
+    throw error;
+  }
+};
+
+// Nueva función para obtener detalles de un solo vuelo
+export const getFlightDetails = async (flightId: number) => {
+  try {
+    // La URL será: http://localhost:8003/api/vuelos/api/vuelos/{flightId}/
+    const response = await client.get(`vuelos/api/vuelos/${flightId}/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching flight details for ID ${flightId}:`, error);
+    throw error;
+  }
+};
+
+// Nueva función para crear una reserva
+export const createReservation = async (reservationData: any) => {
+  try {
+    // La URL será: http://localhost:8003/api/reservas/reservas/
+    const response = await client.post('reservas/api/reservas/', reservationData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating reservation:', error);
+    throw error;
+  }
+};

@@ -52,6 +52,7 @@ pip install djangorestframework-simplejwt
 ###     3. Aplicar migraciones
 - :bookmark_tabs: :three: En los 3 terminales se ejecutan las siguientes líneas:
 ```
+pip install django-cors-headers 
 python manage.py makemigrations
 python manage.py migrate
 ```

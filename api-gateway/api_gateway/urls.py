@@ -29,20 +29,7 @@ def proxy_view(request, service, path):
         else:
             request_body_data = request.body
 
-    # ================================================================
-    # CORRECCIÓN: La URL del microservicio no debe incluir un prefijo de API
-    # si ya está en la ruta. Esto evita la duplicación del prefijo.
-    # Se ha cambiado la lógica para que la URL de destino sea más directa.
-    # La ruta para el microservicio de usuarios es /api/auth/login/
-    # y la ruta que llega a esta función es 'api/auth/login/'
-    # La URL de destino debe ser f"{SERVICE_URLS[service]}/{path}"
-    # ================================================================
-    # Ejemplo:
-    # URL de entrada: http://localhost:8003/api/usuarios/api/auth/login/
-    # service = 'usuarios'
-    # path = 'api/auth/login/'
-    # URL de destino: http://localhost:8001/api/auth/login/
-    
+
     target_url = f"{SERVICE_URLS[service]}/{path}"
     logger.info(f"Proxying request to: {target_url} with method: {request.method}")
 
@@ -58,7 +45,12 @@ def proxy_view(request, service, path):
         )
 
         try:
-            return JsonResponse(response.json(), status=response.status_code)
+            response_json = response.json()
+            # CORRECCIÓN: Si la respuesta es una lista, usa safe=False
+            if isinstance(response_json, list):
+                return JsonResponse(response_json, status=response.status_code, safe=False)
+            else:
+                return JsonResponse(response_json, status=response.status_code)
         except requests.exceptions.JSONDecodeError:
             # Si no es un JSON válido, devolvemos el texto de la respuesta
             return JsonResponse({'message': response.text}, status=response.status_code)
