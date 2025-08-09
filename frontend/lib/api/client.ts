@@ -1,9 +1,58 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+// Interfaz para la aerolínea
+export interface Aerolinea {
+  codigo: string;
+  nombre: string;
+}
+
+// Interfaz para el aeropuerto
+export interface Aeropuerto {
+  codigo: string;
+  nombre: string;
+  ciudad: string;
+  pais: string;
+}
+
+// Interfaz para el vuelo
+export interface Vuelo {
+  id: number;
+  codigo_vuelo: string;
+  aerolinea: Aerolinea;
+  origen: Aeropuerto;
+  destino: Aeropuerto;
+  fecha_salida: string;
+  fecha_llegada: string;
+  duracion: string;
+  asientos_disponibles: number;
+  precio_base: string;
+}
+
+// Interfaz para el pasajero
+export interface Pasajero {
+  nombre: string;
+  apellido: string;
+  tipo_documento: string;
+  numero_documento: string;
+  fecha_nacimiento: string;
+}
+
+// Interfaz para la reserva
+export interface Reserva {
+  id: number;
+  codigo_reserva: string;
+  vuelo_id: number;
+  fecha_reserva: string;
+  estado: 'P' | 'C' | 'X';
+  asientos: number;
+  precio_total: string;
+  pasajeros: Pasajero[];
+}
+
 const client = axios.create({
   // URL base del API Gateway
-  baseURL: 'http://localhost:8003/api/', 
+  baseURL: 'http://localhost:8003/api/',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -60,8 +109,6 @@ export const getFlights = async (filters: { origen?: string; destino?: string; f
       url += `?${params.toString()}`;
     }
 
-    // La URL completa que se enviará al API Gateway será:
-    // http://localhost:8003/api/vuelos/api/vuelos/?origen=UIO&destino=BOG&fecha=2025-08-05
     const response = await client.get(url);
     return response.data;
   } catch (error) {
@@ -73,7 +120,6 @@ export const getFlights = async (filters: { origen?: string; destino?: string; f
 // Nueva función para obtener detalles de un solo vuelo
 export const getFlightDetails = async (flightId: number) => {
   try {
-    // La URL será: http://localhost:8003/api/vuelos/api/vuelos/{flightId}/
     const response = await client.get(`vuelos/api/vuelos/${flightId}/`);
     return response.data;
   } catch (error) {
@@ -85,11 +131,43 @@ export const getFlightDetails = async (flightId: number) => {
 // Nueva función para crear una reserva
 export const createReservation = async (reservationData: any) => {
   try {
-    // La URL será: http://localhost:8003/api/reservas/reservas/
     const response = await client.post('reservas/api/reservas/', reservationData);
     return response.data;
   } catch (error) {
     console.error('Error creating reservation:', error);
+    throw error;
+  }
+};
+
+//Obtiene todas las reservas del usuario actual.
+export const getReservations = async (): Promise<Reserva[]> => {
+  try {
+    const response = await client.get('reservas/api/reservas/');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    throw error;
+  }
+};
+
+//Obtiene los detalles de una reserva específica por ID.
+export const getReservationDetails = async (reservaId: number): Promise<Reserva> => {
+  try {
+    const response = await client.get(`reservas/api/reservas/${reservaId}/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching reservation details for ID ${reservaId}:`, error);
+    throw error;
+  }
+};
+
+//Cancela una reserva (actualiza su estado a 'X')
+export const cancelReservation = async (reservaId: number): Promise<void> => {
+  try {
+    // Tu backend usa el método DELETE para cambiar el estado a 'X'
+    await client.delete(`reservas/api/reservas/${reservaId}/`);
+  } catch (error) {
+    console.error('Error cancelling reservation:', error);
     throw error;
   }
 };

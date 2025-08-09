@@ -21,6 +21,25 @@ export interface UserProfile {
   fecha_nacimiento?: string;
 }
 
+interface Pasajero {
+  nombre: string;
+  apellido: string;
+  tipo_documento: string;
+  numero_documento: string;
+  fecha_nacimiento: string;
+}
+
+export interface Reserva {
+  id: number;
+  codigo_reserva: string;
+  vuelo_id: number;
+  fecha_reserva: string;
+  estado: 'P' | 'C' | 'X';
+  asientos: number;
+  precio_total: string;
+  pasajeros: Pasajero[];
+}
+
 export const login = async (credentials: { username: string; password: string }): Promise<AuthResponse> => {
   try {
     const response = await client.post('usuarios/api/auth/login/', credentials);

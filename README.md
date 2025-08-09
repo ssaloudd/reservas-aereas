@@ -87,6 +87,8 @@ Llenar con los datos pedidos en consola (para desarrollo solo poner como `Userna
 Con el entorno virtual activo, se ejecuta:
 - :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
 ```
+
+.\venv\Scripts\activate
 python manage.py runserver 8001
 ```
 
@@ -100,7 +102,16 @@ python manage.py runserver 8000
 python manage.py runserver 8002
 ```
 
+### :sunrise: **Frontend ()**
+- :file_folder: Tercer Terminal: reservas-aereas\api-gateway
+```
+.\venv\Scripts\activate
+python manage.py runserver 8003
+```
 
 ### :sunrise: **Frontend ()**
+- :file_folder: Tercer Terminal: reservas-aereas\frontend
+.\venv\Scripts\activate
+npm run dev
 
 ### :star2: **Ejecución**

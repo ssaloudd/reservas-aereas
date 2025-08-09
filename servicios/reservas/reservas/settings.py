@@ -123,6 +123,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS': {
+            # Esto hace que Django espere hasta 10 segundos
+            # si la base de datos está bloqueada.
+            'timeout': 10,  
+        }
     }
 }
 

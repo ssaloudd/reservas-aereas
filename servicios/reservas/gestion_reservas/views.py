@@ -71,3 +71,4 @@ class ReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
         # En lugar de borrar, cambiamos el estado a cancelado
         instance.estado = 'X'
         instance.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
