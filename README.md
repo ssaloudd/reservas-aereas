@@ -18,11 +18,12 @@ https://github.com/ssaloudd/reservas-aereas.git
 ### :rocket: **Backend (Django)**
 
 ###     1. Crear y ejecutar un entorno virtual
-Para el funcionamiento de cada servicio, es necesario ingresar a cada carpeta (reservas, usuarios y vuelos). En estas, se deben crear un entorno virtual para cada una.
+Para el funcionamiento del punto de entrada único para los servicios y para cada uno de los mismos, es necesario ingresar a las carpetas de los servicios (reservas, usuarios y vuelos) y del punto (api-gateway). En estas, se deben crear un entorno virtual para cada una.
 
 - :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
 - :file_folder: Segundo Terminal: reservas-aereas\servicios\vuelos
 - :file_folder: Tercer Terminal: reservas-aereas\servicios\reservas
+- :file_folder: Cuarto Terminal: reservas-aereas\api-gateway
 ```
 python -m venv venv
 venv\Scripts\activate
@@ -32,27 +33,35 @@ venv\Scripts\activate
 ###     2. Instalar dependencias
 Con el entorno virtual activo se ejecuta:
 - :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
-```
-pip install django djangorestframework psycopg2-binary pyjwt cryptography
-pip install djangorestframework-simplejwt
-```
-
 - :file_folder: Segundo Terminal: reservas-aereas\servicios\vuelos
-```
-pip install django djangorestframework django-filter
-```
-
 - :file_folder: Tercer Terminal: reservas-aereas\servicios\reservas
+- :file_folder: Cuarto Terminal: reservas-aereas\api-gateway
 ```
-pip install django djangorestframework django-filter psycopg2-binary requests cachecontrol django-rest-framework-token
-pip install djangorestframework-simplejwt
+pip install -r requirements.txt
 ```
 
 
 ###     3. Aplicar migraciones
-- :bookmark_tabs: :three: En los 3 terminales se ejecutan las siguientes líneas:
+- :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
 ```
-pip install django-cors-headers 
+python manage.py makemigrations usuarios
+python manage.py migrate
+```
+
+- :file_folder: Segundo Terminal: reservas-aereas\servicios\vuelos
+```
+python manage.py makemigrations gestion_vuelos
+python manage.py migrate
+```
+
+- :file_folder: Tercer Terminal: reservas-aereas\servicios\reservas
+```
+python manage.py makemigrations gestion_reservas
+python manage.py migrate
+```
+
+- :file_folder: Cuarto Terminal: reservas-aereas\api-gateway
+```
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -84,11 +93,14 @@ Llenar con los datos pedidos en consola (para desarrollo solo poner como `Userna
 
 
 ###     6. Ejecutar servidor
-Con el entorno virtual activo, se ejecuta:
-- :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
+Con el entorno virtual activo:
+```
+venv\Scripts\activate
 ```
 
-.\venv\Scripts\activate
+Se ejecuta:
+- :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
+```
 python manage.py runserver 8001
 ```
 
@@ -102,16 +114,34 @@ python manage.py runserver 8000
 python manage.py runserver 8002
 ```
 
-### :sunrise: **Frontend ()**
-- :file_folder: Tercer Terminal: reservas-aereas\api-gateway
+- :file_folder: Cuarto Terminal: reservas-aereas\api-gateway
 ```
-.\venv\Scripts\activate
 python manage.py runserver 8003
 ```
 
-### :sunrise: **Frontend ()**
-- :file_folder: Tercer Terminal: reservas-aereas\frontend
-.\venv\Scripts\activate
+
+### :sunrise: **Frontend (NextJS)**
+
+
+###     1. Crear y ejecutar un entorno virtual
+Para el funcionamiento de la aplicación, se debe crear un entorno virtual.
+- :file_folder: Quinto Terminal: reservas-aereas\frontend
+```
+python -m venv venv
+venv\Scripts\activate
+```
+
+###     2. Instalar dependencias
+Con el entorno virtual activo se ejecuta:
+```
+npm install @tanstack/react-query @tanstack/react-query-devtools axios js-cookie @types/js-cookie
+```
+
+###     6. Ejecutar servidor
+Después de instalar las dependencias necesarias, se ejecuta:
+```
 npm run dev
+```
 
 ### :star2: **Ejecución**
+Para comenzar, se debe ingresar a http://localhost:3000/auth/login
