@@ -44,15 +44,27 @@ pip install django djangorestframework django-filter
 
 - :file_folder: Tercer Terminal: reservas-aereas\servicios\reservas
 ```
-pip install django djangorestframework django-filter psycopg2-binary requests cachecontrol django-rest-framework-token
+pip install django djangorestframework django-filter psycopg2-binary requests cachecontrol
 pip install djangorestframework-simplejwt
 ```
 
 
 ###     3. Aplicar migraciones
-- :bookmark_tabs: :three: En los 3 terminales se ejecutan las siguientes líneas:
+- :file_folder: Primer Terminal: reservas-aereas\servicios\usuarios
 ```
-python manage.py makemigrations
+python manage.py makemigrations usuarios
+python manage.py migrate
+```
+
+- :file_folder: Segundo Terminal: reservas-aereas\servicios\vuelos
+```
+python manage.py makemigrations gestion_vuelos
+python manage.py migrate
+```
+
+- :file_folder: Tercer Terminal: reservas-aereas\servicios\reservas
+```
+python manage.py makemigrations gestion_reservas
 python manage.py migrate
 ```
 
