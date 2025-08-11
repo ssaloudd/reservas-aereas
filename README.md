@@ -122,22 +122,13 @@ python manage.py runserver 8003
 
 ### :sunrise: **Frontend (NextJS)**
 
-
-###     1. Crear y ejecutar un entorno virtual
-Para el funcionamiento de la aplicación, se debe crear un entorno virtual.
+###     1. Instalar dependencias
 - :file_folder: Quinto Terminal: reservas-aereas\frontend
-```
-python -m venv venv
-venv\Scripts\activate
-```
-
-###     2. Instalar dependencias
-Con el entorno virtual activo se ejecuta:
 ```
 npm install @tanstack/react-query @tanstack/react-query-devtools axios js-cookie @types/js-cookie
 ```
 
-###     6. Ejecutar servidor
+###     2. Ejecutar servidor
 Después de instalar las dependencias necesarias, se ejecuta:
 ```
 npm run dev
