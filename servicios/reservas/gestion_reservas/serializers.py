@@ -14,9 +14,9 @@ class ReservaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Reserva
-        fields = ['id', 'vuelo_id', 'asientos', 'pasajeros', 'precio_total']  # Añadido precio_total
-        read_only_fields = ['id', 'precio_total']  # precio_total es solo lectura
-
+        fields = ['id', 'vuelo_id', 'asientos', 'pasajeros', 'precio_total', 'estado', 'codigo_reserva']
+        read_only_fields = ['id', 'precio_total', 'estado', 'codigo_reserva']
+        
     def create(self, validated_data):
         pasajeros_data = validated_data.pop('pasajeros')
         

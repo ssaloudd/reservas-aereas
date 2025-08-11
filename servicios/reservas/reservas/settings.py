@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,6 +72,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,6 +82,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'reservas.middleware.PrintTokenMiddleware',  # Agrega esto temporalmente
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Frontend
+    "http://localhost:8003",  # API Gateway
 ]
 
 ALLOWED_HOSTS = [
@@ -116,6 +123,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS': {
+            # Esto hace que Django espere hasta 10 segundos
+            # si la base de datos está bloqueada.
+            'timeout': 10,  
+        }
     }
 }
 
