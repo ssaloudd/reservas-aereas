@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-9n6l=^y4@s9mc=$_m1r-z+=38v6i4md2sry0!p4ugtsbzm4j06
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 APPEND_SLASH = False
 
 # Application definition
@@ -90,10 +90,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Frontend
-    "http://localhost:8003",  # API Gateway
-]
+# Relaja la configuración de CORS para la demostración
+CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:3000",  # Frontend
+#    "http://localhost:8003",  # API Gateway
+#]
 
 ROOT_URLCONF = 'usuarios.urls'
 

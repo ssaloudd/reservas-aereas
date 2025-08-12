@@ -50,12 +50,14 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost",  # Ahora las peticiones vienen de aquí
     "http://localhost:3000",
 ]
 
 # No es necesario en una API Gateway, pero se mantiene para desarrollo
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost",
     "http://localhost:8003",
 ] 
 

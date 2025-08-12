@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-cb_+$^2q)(s-0_%#=$24r_zqjn05ya0bnaqu)6+kl0(b*&&w-q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,10 +62,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Frontend
-    "http://localhost:8003",  # API Gateway
-]
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:3000",  # Frontend
+#    "http://localhost:8003",  # API Gateway
+#]
+# Relaja la configuración de CORS para la demostración
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'vuelos.urls'
 
@@ -115,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

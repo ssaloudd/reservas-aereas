@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # Servicio de Autenticación y Gestión de Usuarios
+  usuarios:
+    build:
+      context: ./servicios/usuarios
+    #command: python manage.py runserver 0.0.0.0:8001
+    volumes:
+      - ./servicios/usuarios:/app
+    #ports:
+    #  - "8001:8001"
+    deploy:
+      mode: replicated
+      replicas: 2  # Dos réplicas para alta disponibilidad
+    restart: always
+    
+  # Servicio de Búsqueda y Gestión de Vuelos
+  vuelos:
+    build:
+      context: ./servicios/vuelos
+    #command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./servicios/vuelos:/app
+    #ports:
+    #  - "8000:8000"
+    deploy:
+      mode: replicated
+      replicas: 2  # Dos réplicas para alta disponibilidad
+    restart: always
+
+  # Servicio de Gestión de Reservas
+  reservas:
+    build:
+      context: ./servicios/reservas
+    #command: python manage.py runserver 0.0.0.0:8002
+    volumes:
+      - ./servicios/reservas:/app
+    #ports:
+    #  - "8002:8002"
+    deploy:
+      mode: replicated
+      replicas: 2  # Dos réplicas para alta disponibilidad
+    restart: always
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+    #command: python manage.py runserver 0.0.0.0:8003
+    volumes:
+      - ./api-gateway:/app
+    #ports:
+    #  - "8003:8003"
+    depends_on:
+      - usuarios
+      - vuelos
+      - reservas
+    # Agregamos la configuración de despliegue para el balanceo de carga
+    deploy:
+      mode: replicated
+      replicas: 2 # Creamos dos instancias del servicio
+    restart: always
+  
+   # Servicio de NGINX para Balanceo de Carga
+  nginx:
+    image: nginx:latest
+    container_name: nginx_lb
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"  # Puerto HTTP del host
+    depends_on:
+      - api-gateway  # Depende del API Gateway
+      - frontend # NGINX también necesita conocer el frontend para enrutar las peticiones
+      
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-gateway

@@ -51,8 +51,8 @@ export interface Reserva {
 }
 
 const client = axios.create({
-  // URL base del API Gateway
-  baseURL: 'http://localhost:8003/api/',
+  // URL base del API Gateway a través de NGINX
+  baseURL: 'http://localhost/api/',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

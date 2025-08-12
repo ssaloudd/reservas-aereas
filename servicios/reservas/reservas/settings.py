@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-v&av5l@3=+!d)eq!95-@@g3c52_7o#m%5f6@ta7jy!320g(dvd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -84,17 +84,19 @@ MIDDLEWARE = [
     'reservas.middleware.PrintTokenMiddleware',  # Agrega esto temporalmente
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Frontend
-    "http://localhost:8003",  # API Gateway
-]
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:3000",  # Frontend
+#    "http://localhost:8003",  # API Gateway
+#]
+# Relaja la configuración de CORS para la demostración
+CORS_ALLOW_ALL_ORIGINS = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'kubernetes.docker.internal',  # Agrega este host
-    # Agrega cualquier otro host que necesites
-]
+#ALLOWED_HOSTS = [
+#    'localhost',
+#    '127.0.0.1',
+#    'kubernetes.docker.internal',  # Agrega este host
+#    # Agrega cualquier otro host que necesites
+#]
 
 ROOT_URLCONF = 'reservas.urls'
 

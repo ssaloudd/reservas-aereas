@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 
 def proxy_view(request, service, path):
     SERVICE_URLS = {
-        'usuarios': 'http://localhost:8001',
-        'vuelos': 'http://localhost:8000',
-        'reservas': 'http://localhost:8002'
+        'usuarios': 'http://usuarios:8001',
+        'vuelos': 'http://vuelos:8000',
+        'reservas': 'http://reservas:8002'
     }
 
     # Eliminar encabezados que pueden causar problemas
@@ -62,6 +62,6 @@ def proxy_view(request, service, path):
         return JsonResponse({'error': 'Internal server error'}, status=500)
 
 urlpatterns = [
-    path('api/<str:service>/<path:path>', proxy_view),
+    path('<str:service>/<path:path>', proxy_view),
     path('health/', lambda r: JsonResponse({'status': 'ok'})),
 ]
